@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, flash, redirect
 app = Flask(__name__)
 from forms import RegistrationForm,LoginForm
 
@@ -30,7 +30,7 @@ posts = [
 #to add additonal funtionality to existing functions.this app.route decorator will handle all of the complicated back end stuff
 #and simply allow us to write a function that returns the information that will be shown on our website for this specific route
 @app.route("/home")#two routes can be added to same function
-def hello():
+def home():
     #return "Hello World!"   #this returns only plain text no any html included.
     #return "<h1>Home Page</h1>"#instead of returning html string we have to return template
     return render_template('home.html',posts=posts)
@@ -44,14 +44,23 @@ def about():
     #return "About Page"   #this returns only plain text no any html included.
     return render_template('about.html',title='About')
 
-@app.route("/register")#another route
+@app.route("/register",methods=['GET','POST'])#another route
 def register():
     form = RegistrationForm()#we have created a instance of that form inside our application
+    if form.validate_on_submit():
+        flash(f'Account created for {form.username.data}!','success')
+        return redirect(url_for('home'))
     return render_template('register.html',title='Register',form=form)
     
-@app.route("/login")#another route
+@app.route("/login",methods=['GET','POST'])#another route
 def login():
     form = LoginForm()#we have created a instance of that form inside our application
+    if form.validate_on_submit():
+       if form.email.data == 'admin@blog.com' and form.password.data == 'password':
+         flash('You have been logged in!','success')
+         return redirect(url_for('home'))
+       else :
+        flash('Login Unsuccessful, Please check username and password','danger')
     return render_template('login.html',title='login',form=form)
 
 
