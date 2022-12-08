@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    {% if title %}
+        <title>Flask Blog - {{ title }}</title>
+    {% else %}
+        <title>Flask Blog</title>
+    {% endif  %}
+    </head>
+<body>
+    {% block content %}{% endblock %}
+</body>
+</html>
+
+<!-- this is for repeated code in templates..tthis layout template will be inherited from another templates-->
+<!-- after inheriting we will override the content section in body above..and put code that is unique to that tempalate-->
