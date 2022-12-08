@@ -1,5 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 app = Flask(__name__)
+from forms import RegistrationForm,LoginForm
+
+app.config['SECRET_KEY']='caa71c96d8678de41ec2624344f44d00'
 
 
 posts = [
@@ -41,6 +44,15 @@ def about():
     #return "About Page"   #this returns only plain text no any html included.
     return render_template('about.html',title='About')
 
+@app.route("/register")#another route
+def register():
+    form = RegistrationForm()#we have created a instance of that form inside our application
+    return render_template('register.html',title='Register',form=form)
+    
+@app.route("/login")#another route
+def login():
+    form = LoginForm()#we have created a instance of that form inside our application
+    return render_template('login.html',title='login',form=form)
 
 
 
